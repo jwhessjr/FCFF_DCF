@@ -1,0 +1,5 @@
+This project is intended to determine the intrinsic value of a stock using a discounted cash flow.  The cash flow that is calculaed is an unlevered - Free Cash Flow to the Firm (FCFF).
+
+The logic used to calculate this cash flow is based on the valuations put forth by Aswath Damodaran - Stern School of Business - New York University.
+
+Source for valuation methods = Damodaran, Aswath. Investment Valuation . Wiley. Kindle Edition. 
