@@ -1,7 +1,10 @@
+.gitignore
+
 .vscode/
-venv/
+.DS_Store
 APIKEY.txt
 *.xlsx
+test.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -131,6 +134,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+fcff_venv/
+
 
 # Spyder project settings
 .spyderproject
