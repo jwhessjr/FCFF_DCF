@@ -1,0 +1,79 @@
+Basic inputs to value an equity
+    1. Cash flows from existing assets net of reinvestment needs and taxes
+    2.  Expected growth in these cash flows
+    3.  Cost of financing these assets
+    4.  An estimate of what the firm will be worth at the end of the forecast period (terminal value)
+
+Cash flows - 2 measures
+    1.  Free caah flows to equity
+        FCFE = Net income - Capex + Depreciation - Changes to non cash working capital
+        + New debt issued
+
+    2.  Free Cash Flow to the firm
+        FCFF = Operating Income - Taxes paid - Capex + Depreciation - Changes to non cash working capital
+            = After tax operating income X (1 - Reinvestment Rate)
+                Reinvestment Rate = (Net Capex + Changes in non cash working capital) / After tax operating income)
+
+
+    N.B.  if net income or operating income is not stable, you may have to normalize these numbers - average over several periods
+    If Capex is not steady, you can average the capex over several years, but use the most recent period for depreciation, etc.
+
+
+
+Expected growth 
+    1.  A function of the amount of reinvestment that the firm makes and the return on these investments
+
+    2.  Growth in earnings = Proportion invested X Return on the investments
+        a.  FCFF - Growth in earnings = Reinvestment Rate X Return on Capital
+            Reinvestment Rate = (Net Capital Expenditure + Change in Non Cash Working Capital) / After Tax Operating Income 
+            Return on Capital = (Operating Income X (1 - effective tax rate)) / (Book Value of Debt + Book Value of Equity - Cash)
+                
+        b.  FCFE - Growth in earnings = Retention Ratio X Return on Equity
+            Retention Ratio = (Net Income - Dividends) / Net Income
+            Return on Equity = Net Income / Average Book Value of Equity
+
+Cost of Financing assets
+    1.  FCFE = Cost of Equity = Risk Free Rate + Beta (Equity Risk Premium)
+        Risk Free Rate = 10 Year Treasury 
+        Equity Risk Premium = Rate that investors expect from an equity investment over and above the risk free rate
+        Beta =    
+            a.  Firm specific beta (backward looking and noisy)
+            b.  Sector average beta (less noise due to average of large numbers = average out the mistakes) May have to create an average sector beta to allow for a firm that operates in multiple sectors
+
+    2.  FCFF = Weighted Cost of Capital = (Cost  of Debt X portion of debt financing) + (Cost of Equity X portion of equity financing)
+        After Tax Cost of Debt = (Risk Free Rate + Default Spread) X (1 - Marginal Tax Rate)
+        Default Spread = Interst rate of publicly trade bonds with the firm's risk profile.  The risk profile can be estimated by looking at the Interest Coverage Ratio = Operating Income / Interest Expense
+
+Terminal Value 
+    1.  A going concern value that assumes that the firm will continue to exist in perpetuity
+    2  Terminal Value in Year n = Cash flows in year n+1 / (Discount Rate - Perpetual Growth Rate)
+        Discount rate for FCFE = Cost of Equity
+        Discount rate for FCFF = WACC
+            1. Perpetual growth rate cannot exceed the growth rate of the economy in which it operates (CAGR GDP US ~ 2%)
+            Rule of Thumb - use the risk free rate
+            2. Risk Levels should move toward market beta of 1
+            3.  Debt ratios should increase to industry norms
+            3.  Stable grpowth firm should reinvest enough to sustain the assumed growth rate = Expected Growth Rate in operating income (net income) / Return on Capital (Equity)
+
+
+        N.B. the changes in risk and debt levels will change the Cost of Equity And the Weighted Average Cost of Capital
+
+        N.B. If the Return on Capital (Equity) exceeds the Cost of Capital (Equity) the firm's value will increase
+        N.B. The key assumption in the terminal value computation is what (if any) excess returns accompany the growth rate.  If you assume no excess returns, the return will equal the Cost of Caoital (equity)
+
+Enterprise value equals the sum of the present values of the cash flows and the terminal value
+
+FCFF - four adjustments to make to get to value per share:
+    1. Add back the cash balance of the firm
+    2. Adjust for cross holdings:
+        a. Add back the values of minority holdings you have in other companies
+        b. subtract the estimated market value of the minority interest in your consiolidated firm value
+    3. Subtract other potential liabilities
+        a.  Underfunded pension of helath care obligations
+        b. Ongoing lawsuits
+    4. Subtract the value of management options using option    
+    pricing models
+
+    Then divide by the actual number of shares outstanding
+
+FCFE - Enterprise value divided by the actual number of shares outstanding
