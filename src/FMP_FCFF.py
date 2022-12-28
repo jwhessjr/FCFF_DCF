@@ -76,8 +76,17 @@ def main():
     print(f"Reinvestment Rate = {reinvestmentRate}")
     ROC = (opInc * (1 - effTaxRate)) / (bvDebt + bvEquity - cash)
     print(f"Return on Capital = {ROC}")
-    ExpGrowthOpInc = reinvestmentRate * ROC
-    print(f"Expected Growth in Op Income = {ExpGrowthOpInc}")
+    expGrowthOpInc = reinvestmentRate * ROC
+    print(f"Expected Growth in Op Income = {expGrowthOpInc}")
+
+    # Calculate Expected Free Cash Flow to Firm
+    expectedFCFF = []
+    for year in range(growthPeriod):
+        if year == 0:
+            expectedFCFF.append(fcff * (1 + expGrowthOpInc))
+        else:
+            expectedFCFF.append(expectedFCFF[year - 1] * (1 + expGrowthOpInc))
+    print(f"Expected FCFF = {expectedFCFF}")
 
 
 if __name__ == "__main__":
