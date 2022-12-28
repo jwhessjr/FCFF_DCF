@@ -27,23 +27,57 @@ def main():
 
     cshFlw = hg_dcflib.get_cshFlw(company, myApiKey)
 
-    entVal = hg_dcflib.get_entVal(company, myApiKey)
-    # print(entVal)
-    sharesOutstanding = entVal[0]
-    # print(sharesOutstanding)
-    marketCap = entVal[1]
-    # print(marketCap)
+    entQuote = hg_dcflib.get_quote(company, myApiKey)
+    print(entQuote)
+    price = entQuote[0]
+    sharesOutstanding = entQuote[1]
+    marketCap = entQuote[2]
 
-    price = hg_dcflib.get_price(company, myApiKey)
-    print(price)
+    opInc = float(incStmnt["ebit"][0])
+    capex = float(cshFlw["capex"][0] * -1)
+    deprec = float(cshFlw["depreciation"][0])
+    incTax = incStmnt["incomeTaxExpense"][0]
+    effTaxRate = incTax / opInc
+    bvDebt = float(balSht["totalLiabilities"][0])
+    bvEquity = float(balSht["totalStockholdersEquity"][0])
+    cash = float(balSht["cashAndCashEquivalents"][0])
 
-    # incStmnt.to_csv(f"{tckr}_incomeStatement.csv")
-    # balSht.to_csv(f"{tckr}_balanceSheet.csv")
-    # cfStmnt.to_csv(f"{tckr}_cashflowStatement.csv")
+    # Calculate Current Year Non Cash Working Capital
+    currYearWorkingCap = (
+        balSht["totalCurrentAssets"][0] - balSht["cashAndCashEquivalents"][0]
+    ) - (balSht["totalCurrentLiabilities"][0] - balSht["shortTermDebt"][0])
 
-    print(incStmnt)
-    print(balSht)
-    print(cshFlw)
+    # Calculate Prior Year Non Cash Working Capitalß
+    priorYearWorkingCap = (
+        balSht["totalCurrentAssets"][1] - balSht["cashAndCashEquivalents"][1]
+    ) - (balSht["totalCurrentLiabilities"][1] - balSht["shortTermDebt"][1])
+
+    # Calculate Change in Non Cash Working Capital
+    chngWorkingCap = currYearWorkingCap - priorYearWorkingCap
+
+    # incStmnt.to_csv(f"{company}_incomeStatement.csv")
+    # balSht.to_csv(f"{company}_balanceSheet.csv")
+    # cshFlw.to_csv(f"{company}_cashflowStatement.csv")
+
+    # Calculate Free Cash Flow to the Firm
+    fcff = opInc - capex + deprec - chngWorkingCap
+    print(f"Operating Income = {opInc}")
+    print(f"Capex = {capex}")
+    print(f"Depreciation = {deprec}")
+    print(f"Change in Working Capital = {chngWorkingCap}")
+    print(f"Free Cash Flow to Firm = {fcff}")
+    print(f"Effective Tax Rate = {effTaxRate}")
+    print(f"Income Tax = {incTax}")
+
+    # Calculate Griwth Rate in Operating Income
+    firmReinvestment = capex - deprec + chngWorkingCap
+    print(f"Reinvestment = {firmReinvestment}")
+    reinvestmentRate = firmReinvestment / opInc
+    print(f"Reinvestment Rate = {reinvestmentRate}")
+    ROC = (opInc * (1 - effTaxRate)) / (bvDebt + bvEquity - cash)
+    print(f"Return on Capital = {ROC}")
+    ExpGrowthOpInc = reinvestmentRate * ROC
+    print(f"Expected Growth in Op Income = {ExpGrowthOpInc}")
 
 
 if __name__ == "__main__":

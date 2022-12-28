@@ -77,11 +77,17 @@ def get_incStmnt(company, myApiKey):
             )
 
         netIncome.append(yearNetIncome)
+        # print(f"Net Income = {yearNetIncome}")
         interestIncome.append(yearIntIncome)
+        # print(f"Interest Income = {yearIntIncome}")
         totalRevenue.append(yearTotalRevenue)
+        # print(f"Total Revenue = {yearTotalRevenue}")
         incomeBeforeTax.append(yearIncBeforeTax)
+        # print(f"Income Before Tax = {yearIncBeforeTax}")
         incomeTaxExpense.append(yearTaxExpense)
+        # print(f"Tax Expense = {yearTaxExpense}")
         ebit.append(yearEbit)
+        # print(f"EBIT = {yearEbit}")
         indx += 4
         if indx > 16:
             break
@@ -116,6 +122,13 @@ def get_balSht(company, myApiKey):
         data[12]["totalCurrentAssets"],
         data[16]["totalCurrentAssets"],
     ]
+    totalAssets = [
+        data[0]["totalAssets"],
+        data[4]["totalAssets"],
+        data[8]["totalAssets"],
+        data[12]["totalAssets"],
+        data[16]["totalAssets"],
+    ]
     accountsPayable = [
         data[0]["accountPayables"],
         data[4]["accountPayables"],
@@ -129,6 +142,13 @@ def get_balSht(company, myApiKey):
         data[8]["totalStockholdersEquity"],
         data[12]["totalStockholdersEquity"],
         data[16]["totalStockholdersEquity"],
+    ]
+    currentLiabilities = [
+        data[0]["totalCurrentLiabilities"],
+        data[4]["totalCurrentLiabilities"],
+        data[8]["totalCurrentLiabilities"],
+        data[12]["totalCurrentLiabilities"],
+        data[16]["totalCurrentLiabilities"],
     ]
     liabilities = [
         data[0]["totalLiabilities"],
@@ -147,9 +167,11 @@ def get_balSht(company, myApiKey):
 
     balSht["cashAndCashEquivalents"] = cashAndEquivalents
     balSht["totalCurrentAssets"] = currentAssets
+    balSht["totalAssets"] = totalAssets
     balSht["accountsPayable"] = accountsPayable
-    balSht["totalLiabilities"] = liabilities
     balSht["shortTermDebt"] = shortTermDebt
+    balSht["totalCurrentLiabilities"] = currentLiabilities
+    balSht["totalLiabilities"] = liabilities
     balSht["totalStockholdersEquity"] = stockholdersEquity
 
     return balSht
@@ -165,6 +187,8 @@ def get_cshFlw(company, myApiKey):
     depreciation = []
     capex = []
     acquisition = []
+    stockBuyBack = []
+    dividends = []
     indx = 0
     for year in range(5):
         for qtr in range(indx + 4):
@@ -187,9 +211,23 @@ def get_cshFlw(company, myApiKey):
                 + data[indx + 2]["acquisitionsNet"]
                 + data[indx + 3]["acquisitionsNet"]
             )
+            yearStockBuyBack = (
+                data[indx]["commonStockRepurchased"]
+                + data[indx + 1]["commonStockRepurchased"]
+                + data[indx + 2]["commonStockRepurchased"]
+                + data[indx + 3]["commonStockRepurchased"]
+            )
+            yearDividends = (
+                data[indx]["dividendsPaid"]
+                + data[indx + 1]["dividendsPaid"]
+                + data[indx + 2]["dividendsPaid"]
+                + data[indx + 3]["dividendsPaid"]
+            )
         capex.append(yearCapex)
         depreciation.append(yearDeprec)
         acquisition.append(yearAcquisition)
+        stockBuyBack.append(yearStockBuyBack)
+        dividends.append(yearDividends)
         indx += 4
         if indx > 16:
             break
@@ -197,32 +235,24 @@ def get_cshFlw(company, myApiKey):
     cshFlw["depreciation"] = depreciation
     cshFlw["capex"] = capex
     cshFlw["acquisition"] = acquisition
+    cshFlw["stockBuyBack"] = stockBuyBack
+    cshFlw["dividendsPaid"] = dividends
 
     return cshFlw
 
 
-# Function to extract number of shares outstanding
+# Function to get the current share price, shares outstanding, and market cap
 
 
-def get_entVal(company, myApiKey):
-    url = f"https://financialmodelingprep.com/api/v3/enterprise-values/{company}?limit=1&apikey={myApiKey}"
+def get_quote(company, myApiKey):
+    url = f"https://financialmodelingprep.com/api/v3/quote/{company}?apikey={myApiKey}"
     data = get_jsonparsed_data(url)
-    sharesOutstanding = data[0]["numberOfShares"]
-    marketCap = data[0]["marketCapitalization"]
-    entVal = sharesOutstanding, marketCap
-
-    return entVal
-
-
-# Function to get the current share price
-
-
-def get_price(company, myApiKey):
-    url = f"https://financialmodelingprep.com/api/v3/quote-short/{company}?apikey={myApiKey}"
-    data = get_jsonparsed_data(url)
+    # print(data)
     price = data[0]["price"]
-
-    return price
+    sharesOutstanding = data[0]["sharesOutstanding"]
+    marketCap = data[0]["marketCap"]
+    entQuote = price, sharesOutstanding, marketCap
+    return entQuote
 
 
 def get_riskFree():
