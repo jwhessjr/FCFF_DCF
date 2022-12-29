@@ -8,10 +8,11 @@ import hg_dcflib
 def main():
     company = input("Input company ticker: ").upper()
     print(company)
-    EQPREM = 0.0569  # Damodaran 20220701
+    EQPREM = 0.0455  # Damodaran 20221201
+    MarginalTaxRate = 0.26
     industry = hg_dcflib.get_industry(company)
     print(f"Industry: {industry}")
-    leveredBeta = hg_dcflib.get_beta(industry)
+    unleveredBeta = hg_dcflib.get_beta(industry)
     riskFree = hg_dcflib.get_riskFree()
     growthPeriod = int(input("Input growth period: "))
     # long term a company can't grow faster than the economy in which it operates
@@ -87,6 +88,24 @@ def main():
         else:
             expectedFCFF.append(expectedFCFF[year - 1] * (1 + expGrowthOpInc))
     print(f"Expected FCFF = {expectedFCFF}")
+
+    # Calculate Cost of Capital -> Discount Rate
+    # 1. Calculate Interest COverage
+    intCover = opInc / incStmnt["incomeTaxExpense"][0]
+    print(f"Interest Coverage = {intCover}")
+    defSpread = hg_dcflib.get_default_spread(intCover)
+    print(f"Default Spread = {defSpread}")
+    # 2. Calcultate after tax cost of debt
+    costOfDebt = (riskFree + defSpread) * (1 - MarginalTaxRate)
+    print(f"Cost of Debt = {costOfDebt}")
+    # 3. Calculate cost of equity
+    costOfEquity = riskFree + (unleveredBeta * EQPREM)
+    print(f"Cost of Equity = {costOfEquity}")
+    totalCap = bvDebt + marketCap
+    percentDebt = bvDebt / totalCap
+    percentEquity = marketCap / totalCap
+    costOfCapital = (costOfDebt * percentDebt) + (costOfEquity * percentEquity)
+    print(f"Cost of Capital = {costOfCapital}")
 
 
 if __name__ == "__main__":

@@ -296,3 +296,25 @@ def get_beta(industry):
             continue
     print(f"Beta {unleveredBeta}")
     return unleveredBeta
+
+
+def get_default_spread(intCover):
+    defaultSpread = pd.read_excel(
+        "/Users/jhess/Documents/Investing/Damodaran Reference/defaultSpread.xlsx"
+    )
+
+    # for col in defaultSpread.columns:
+    #     print(col)
+
+    for index in defaultSpread.index:
+        if (
+            intCover > defaultSpread["GT"][index]
+            and intCover < defaultSpread["LT"][index]
+        ):
+            return defaultSpread["Spread"][index]
+        else:
+            continue
+    # print(defa
+    # ultSpread)
+    # print(defaultSpread.index)
+
