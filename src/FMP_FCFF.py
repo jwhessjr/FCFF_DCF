@@ -16,7 +16,7 @@ def main():
     riskFree = hg_dcflib.get_riskFree()
     growthPeriod = int(input("Input growth period: "))
     # long term a company can't grow faster than the economy in which it operates
-    STABLEGROWTH = 0.021  # CAGR last 10 years
+    STABLEGROWTH = riskFree  # CAGR last 10 years
     # the unlevered beta for the industry in which the firm opeerates
     stableBeta = 1.0
     with open("data/apiKey.txt") as f:
