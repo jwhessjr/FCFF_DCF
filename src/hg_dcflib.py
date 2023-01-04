@@ -164,12 +164,19 @@ def get_balSht(company, myApiKey):
         data[12]["shortTermDebt"],
         data[16]["shortTermDebt"],
     ]
-
+    longTermDebt = [
+        data[0]["longTermDebt"],
+        data[4]["longTermDebt"],
+        data[8]["longTermDebt"],
+        data[12]["longTermDebt"],
+        data[16]["longTermDebt"],
+    ]
     balSht["cashAndCashEquivalents"] = cashAndEquivalents
     balSht["totalCurrentAssets"] = currentAssets
     balSht["totalAssets"] = totalAssets
     balSht["accountsPayable"] = accountsPayable
     balSht["shortTermDebt"] = shortTermDebt
+    balSht["longTermDebt"] = longTermDebt
     balSht["totalCurrentLiabilities"] = currentLiabilities
     balSht["totalLiabilities"] = liabilities
     balSht["totalStockholdersEquity"] = stockholdersEquity

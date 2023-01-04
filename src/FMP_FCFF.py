@@ -39,7 +39,7 @@ def main():
     deprec = float(cshFlw["depreciation"][0])
     incTax = incStmnt["incomeTaxExpense"][0]
     effTaxRate = incTax / opInc
-    bvDebt = float(balSht["totalLiabilities"][0])
+    bvDebt = float(balSht["shortTermDebt"][0]) + float(balSht["longTermDebt"][0])
     bvEquity = float(balSht["totalStockholdersEquity"][0])
     cash = float(balSht["cashAndCashEquivalents"][0])
 
