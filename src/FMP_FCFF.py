@@ -106,6 +106,37 @@ def main():
     percentEquity = marketCap / totalCap
     costOfCapital = (costOfDebt * percentDebt) + (costOfEquity * percentEquity)
     print(f"Cost of Capital = {costOfCapital}")
+    # Calculate the termnal value of the firm
+    # 1.  After Taxx Operating Income in the year following the last growth year
+    #       = Cash flow in year n + 1 / (discount rate - perpetual growth rate)
+    #       cash flow in year n+1 = cash flow in year n * (1 + perpetual growth rate)
+    #       discount rate = cost of capital recalculs=ated to reflect stable period cost of equity (beta changes)
+    stableCostOfEquity = riskFree + (stableBeta * EQPREM)
+    stableCostOfCapital = (costOfDebt * percentDebt) + (
+        stableCostOfEquity * percentEquity
+    )
+    terminalFCFF = (expectedFCFF[-1] * (1 + STABLEGROWTH)) / (
+        stableCostOfCapital - STABLEGROWTH
+    )
+    print(f"Terminal Cash Flow to Firm = {terminalFCFF}")
+
+    # Calculate Firm Value = present value of growth period free cash flows + present value of the terminal cash flow
+    firmValue = 0
+    for year in range(growthPeriod):
+        presentValue = expectedFCFF[year] / ((1 + costOfCapital) ** (year + 1))
+        firmValue += presentValue
+        if year == growthPeriod - 1:
+            presentValueOfTerminalValue = terminalFCFF / (
+                (1 + costOfCapital) ** (year + 1)
+            )
+            firmValue += presentValueOfTerminalValue
+    print(f"firmValue = {firmValue}")
+
+    # Calculate the value of equity = firm value - debt + cash
+    equityValue = firmValue - bvDebt + cash
+    print(f"Debt = {bvDebt}")
+    print(f"Cash = {cash}")
+    print(f"Equity Value = {equityValue}")
 
 
 if __name__ == "__main__":
